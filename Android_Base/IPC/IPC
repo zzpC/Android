@@ -1,0 +1,15 @@
+一 Android的多进程:给四大组件在Mainifests指定android:process属性
+特殊做法是通过JNI在native层fork一个新的进程
+
+二 IPC的方式
+1 Bundle
+2 文件共享
+3 Messenger
+4 AIDL:基本数据类型+字符串+ArrayList+HashMap+实现Parcelable的对象
+5 使用Socket
+
+// 基础概念
+1 serialVersionUID 手动指定而不是自动生成,可避免类成员结构改变导致反序列化失败
+2 实现Parceable接口,就可通过Intent和Binder
+
+
