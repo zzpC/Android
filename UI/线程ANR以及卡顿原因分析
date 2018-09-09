@@ -1,0 +1,26 @@
+一 ANR现象分析
+1 产生ANR的情况：
+a 5秒内无法对输入事件做出响应
+b 广播接收器无法在10秒内结束
+
+2 ANR时系统做了什么
+1 弹出一个对话框
+2 信息输出到traces文件
+3 信息输出到Logcat中
+
+二 App卡顿的原因
+1 性能优化
+a 布局优化
+1）使用<include>指定另一个布局文件
+2）<merge>
+例子：线性布局内的空间仍是线性布局，把被包含的线性布局改为<merge>
+3) <ViewStub>，继承View，轻量，宽高为0
+使用：当ViewStub控件调用setVisibility或者inflate方法，ViewStub就会被自身内部布局替换掉
+b 绘制优化
+View的onDraw方法不创大量局部对象，不做耗时操作；
+原因：Android绘制帧率60fps，每次绘制时间别超过16.667ms
+c 内存泄漏优化
+静态变量引用Activity，
+属性动画持有Activity的View，而View持有Activity。Activity无法正常销毁
+联系：GC的回收机制
+
