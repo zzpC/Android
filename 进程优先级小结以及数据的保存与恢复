@@ -1,0 +1,28 @@
+一 Android的进程层次（从高到底）
+1 前台进程
+1）前台的Activity，时期：onResume()~onPause()
+2）前台服务，应该用于关键的，可悲立刻察觉的场景，比如媒体播放
+3）关键的生命周期方法会让一个进程临时提升为前台进程，确保组件都能执行完不被杀
+关键声明周期方法包括onDestroy，onCreate，onReceive()等
+
+2 可见进程
+1）在透明的activity之后或前台activity启动一个新activity。时期onStart~onStop
+2）如果内存压力过大，可见进程被杀，可见activity会被黑屏替代。
+
+3 服务进程
+1）调用startService
+PS:onStartCommand返回的常量
+
+
+4 后台进程
+例子：用户点了home键，onStopbeidiaoyong 
+
+5 空进程
+无活跃的组件，出于缓存而被保留，随时可以被杀掉。
+
+二 数据的保存恢复
+1 使用Intent跨组件传送数据
+原理：用于启动activity的Intent和未被销毁的activity都会被维护在任务栈中
+疑问：为什么不把数据存在一个全局单例类中？
+App处于后台时，所有的全局单例类都会被销毁，包括Application实例。当app切回前台时数据已被丢失。
+运行时临时的数据应该存放在sharedPreference、临时文件或者数据库中。
