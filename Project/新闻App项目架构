@@ -1,0 +1,23 @@
+一 数据和界面的交互
+1 新闻,视频,个人设置信息3个模块使用3个Fragment,使用底部栏切换相应Fragment
+2 进入新闻模块NewsModuleFragment
+1)静态内部类ViewPagerTopTab
+a 每个Tab创建相应的下拉刷新Fragment
+b Tab文字,图片,分割线颜色数据存在静态内部类中
+c 每个tab对应一个这个静态内部类的实例,用ArrayList存储
+
+2) P层替代Activity执行Tab数据的初始化,XXX的初始化
+
+3) FragmentStatePagerAdapter 
+a FragmentStatePagerApdapter和FragmentPagerAdapter的比较(即为什么要用前者)
+共同点:当Adapter需要指定位置的Fragment,Fragment不存在,getItem会被调用。getItem执行的任务是是创建Fragment
+区别：
+前者当Fragment销毁，getItem就会被调用；彻底销毁Fragment，并把实例状态存在Bundle中，生成新Fragment时用于数据恢复
+后者销毁Fragment的视图后，fragment实例保留在FM中不被销毁，也因此不再调用getItem
+b getItem中使用对应的Tab数据类创建对应的Fragment，让适配器得知这个数据
+c 各类Adapter的notifydatasetChange的工作原理，待继续研究
+
+//
+1 findViewbyId写在onCreateView还是onViewCreated
+
+
