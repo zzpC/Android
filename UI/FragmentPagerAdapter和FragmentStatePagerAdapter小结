@@ -1,0 +1,23 @@
+一 FragmentStatePagerAdapter
+1 在getItem返回数据源数组的位置，getCount返回fragment数量
+2 在fragment中构造这个Adapter，调用notifyDataSetChanged方法
+3（！！） 重写getItemPosition方法，return POSITION_NONE;
+原因：最终会执行requestLayout
+如果不这么做的后果：第二次调用时无法更新显示这个ViewPager。
+
+
+
+
+三 二者的区别，可从destroyItem和instantiateItem分析
+FragmentStatePagerAdapter
+1）mFragments缓存Fragment集合，destroyItem方法中设置为null
+如果不能从缓存集合中得到Fragment，则调用getItem方法
+2） 销毁机制是FM事务调用remove方法，在FM中被移除
+
+FragmentPagerAdapter
+1）销毁机制是FM调用detach方法，仍能通过FM找到Fragment
+2）为了让ViewPager能刷新，在destroyItem把attach操作重写为remove操作：
+mTransaction.remove(mFragment);// Fragment可从接口参数中取得
+mTransaction.remove.commitNowAllowingStateLoss();// 不关心恢复Fragment时这项事务的提交是否会丢失
+
+感悟：既要能快速定位到能理解或者解决bug的关键代码，又要对相关原理把握准确且有深度，还要能更根据UI的原理使自己希望执行的逻辑能生效。
