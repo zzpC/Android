@@ -1,0 +1,22 @@
+一 概述
+1 模型
+Message：硬件产生的消息(如按钮、触摸)和软件生成的消息
+MessageQueue:向消息池投递,取走消息
+Handler:向消息池发送,处理各种消息事件
+Looper:按分发机制将消息分发给目标处理者
+
+二 Java层
+Message:
+Handler通过sendMessage()发送Message到MessageQueue队列；
+Looper通过loop()，不断提取出达到触发条件的Message，并将Message交给target来处理；
+经过dispatchMessage()后，交回给Handler的handleMessage()来进行相应地处理。
+将Message加入MessageQueue时，处往管道写入字符，可以会唤醒loop线程；如果MessageQueue中没有Message，并处于Idle状态，则会执行IdelHandler接口中的方法，往往用于做一些清理性地工作。
+
+
+消息分发优先级:
+Message的回调方法 > Handler的回调方法 > Handler的默认方法
+即 message.callback.run() > Handler.mCallback.handleMessage(msg) > Handler.handleMessage(msg)
+
+三 native层
+需要了解select,poll,epoll的运作机制
+epoll理论为fd限制，不需遍历文件，使用注册回调机制。
