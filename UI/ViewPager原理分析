@@ -1,0 +1,20 @@
+// 源码分析
+一
+onMeasure():
+2  测量Decor控件
+3 从Adapter中创建ChildView
+4 测量ChildView
+
+二
+onLayout:先布局Decor，再布局Adapter创建的childView
+
+
+// 疑问
+1.什么情况需要自己实现原生PagerAdapter接口？
+当需要ViewPager托管非fragment视图时（如图片这样的常见View对象），就需要实现原生PagerAdapter接口。
+
+2.ViewPager VS RecyclerView？
+由于无法使用现有的Fragment，因此使用RecyclerView需处理大量内部实现工作，Adapter需要我们及时地提供View。然而，决定fragment视图何时创建的是FragmentManager。
+因此，当RecyclerView要求Adapter提供fragment视图时，我们无法立即创建fragment并提供其视图。
+
+

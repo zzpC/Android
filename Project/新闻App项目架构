@@ -21,3 +21,24 @@ c 各类Adapter的notifydatasetChange的工作原理，待继续研究
 1 findViewbyId写在onCreateView还是onViewCreated
 
 
+二
+1 每个tab的主题
+创建对应的Fragment,从全局Application获取对应得数据源URL。ViewPagerAdapter已经有相应的缓存和调用机制，不需要自己收集Fragment到某个容器中。
+2 每个Fragment
+实现了下拉刷新功能
+
+三 Activity和Fragment的状态缓存策略,以及最佳实践
+1 当 Activity 的 onSaveInstanceState 方法被调用时，Activity 会自动收集 Viewde的视图层次
+一旦 onRestoreInstanceState 方法被调用，Activity 将这些收集的数据回传给视图层次中的View
+2 视图层次中的View可以，Activity成员变量不行
+3 自定义View的缓存和恢复；换句话能时缓存策略生效的条件：
+重写View的onSaveInstanceState：造一个Bundle，
+重写View的onRestoreInstanceState：调用父类方法+取出Parcelable状态
+View在Layout文件中有分配android:id属性
+4 自定义Fragment的缓存策略：
+在Fragment重写onSaveInstanceState,利用Bundle参数存数据
+5 综合第4,5点,View重写对应方法实现缓存,Fragment也重写对应方法缓存其他剩余的数据
+
+四 下拉刷新原理SwipeMenuRecyclerView+SwipeRefreshLayout
+
+五 重构SharedPreferences
