@@ -1,0 +1,20 @@
+﻿事件分发
+1 怎么传到activity
+硬件捕获->native->WindowInputEvent->ViewRootImpl->ViewPostImeInputStage->DecorView->Activity
+
+ViewRootImpl怎么关联DecorView？
+在UI线程中，跨进程向WMS发起调用，将DecorView添加到Window
+
+Window怎么关联Activity的？
+Actvity实现了Window.CallBack接口,通过mWindow.setCallback()获取Activity的引用
+
+Activity的onResume周期后，DecorView才开始attach给WindowManager？
+
+DecorView通过跨进程的方式向WMS（WindowManagerService）发起一个调用，从而将DecorView最终添加到Window上
+
+硬件捕获->WMS->ViewRootImpl中的ViewRootHandler，WindowInputEventReceiver切换到UI线程，寻找合适它的InputStage
+->传给DecorView进行分发，DecorView是Window内部类，调用getCallback()获得外部类成员，本质就是Actvity
+
+
+资讯类App，非纯客户端，怎么和服务器交互，考虑安全问题，性能问题
+工具类App
